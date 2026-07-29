@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Northstar Supply - thoughtfully selected everyday goods.">
+  <title>Northstar Supply | Everyday Goods</title>
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="stylesheet" href="/stylesheets/style.css">
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js" defer></script>
+  <script src="/javascripts/shop.js" defer></script>
+</head>
+<body>
+  <div class="announcement">
+    <p>Free shipping on orders over $75</p>
+    <button class="text-button" type="button" aria-label="Close announcement" data-dismiss-announcement>
+      <span>Dismiss</span>
+      <i data-lucide="x" aria-hidden="true"></i>
+    </button>
+  </div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="/" aria-label="Northstar Supply home">
+        <span class="brand-mark" aria-hidden="true">N</span>
+        <span>NORTHSTAR<br>SUPPLY</span>
+      </a>
+
+      <nav class="desktop-nav" aria-label="Primary navigation">
+        <a class="active" href="#shop">Shop</a>
+        <a href="#collections">Collections</a>
+        <a href="#story">Our Story</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="icon-button mobile-menu-button" type="button" aria-label="Open menu" data-menu-toggle>
+          <i data-lucide="menu" aria-hidden="true"></i>
+        </button>
+        <button class="icon-button" type="button" aria-label="Search products" data-search-focus>
+          <i data-lucide="search" aria-hidden="true"></i>
+        </button>
+        <div class="account-menu" data-account-menu>
+          <a class="icon-button account-button" href="/login" aria-label="Sign in" aria-haspopup="true" aria-expanded="false" data-account-trigger>
+            <i data-lucide="user-round" aria-hidden="true" data-account-icon></i>
+            <span class="account-avatar" hidden data-account-avatar></span>
+          </a>
+          <div class="account-popover" role="dialog" aria-label="Account menu" hidden data-account-popover>
+            <div class="account-popover-panel">
+              <div class="account-profile">
+                <span class="profile-avatar" data-profile-avatar></span>
+                <div>
+                  <strong data-profile-name>Customer</strong>
+                  <span data-profile-email></span>
+                </div>
+                <span class="signed-in-badge">Signed in</span>
+              </div>
+              <div class="account-links">
+                <a href="/account">
+                  <i data-lucide="user-round" aria-hidden="true"></i>
+                  Account
+                  <i data-lucide="chevron-right" aria-hidden="true"></i>
+                </a>
+                <a href="/orders">
+                  <i data-lucide="package" aria-hidden="true"></i>
+                  My orders
+                  <i data-lucide="chevron-right" aria-hidden="true"></i>
+                </a>
+                <a href="/favorites">
+                  <i data-lucide="heart" aria-hidden="true"></i>
+                  Saved goods
+                  <i data-lucide="chevron-right" aria-hidden="true"></i>
+                </a>
+              </div>
+              <form action="/api/logout" method="post">
+                <button class="logout-button" type="submit">
+                  <i data-lucide="log-out" aria-hidden="true"></i>
+                  Sign out
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <button class="cart-button" type="button" aria-label="Open shopping bag" data-cart-open>
+          <i data-lucide="shopping-bag" aria-hidden="true"></i>
+          <span>Bag</span>
+          <span class="cart-count" data-cart-count>0</span>
+        </button>
+      </div>
+    </div>
+
+    <nav class="mobile-nav" aria-label="Mobile navigation" data-mobile-nav>
+      <a href="#shop">Shop</a>
+      <a href="#collections">Collections</a>
+      <a href="#story">Our Story</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="hero-heading">
+      <img
+        src="https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=2000&q=88"
+        alt="A curated arrangement of everyday home objects"
+      >
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <p class="eyebrow">Summer edit · 2026</p>
+        <h1 id="hero-heading">Objects for better days.</h1>
+        <p>Considered goods for home, work, and everywhere in between.</p>
+        <a class="primary-button" href="#shop">
+          Shop the collection
+          <i data-lucide="arrow-down-right" aria-hidden="true"></i>
+        </a>
+      </div>
+    </section>
+
+    <section class="shop-section" id="shop" aria-labelledby="shop-heading">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Curated essentials</p>
+          <h2 id="shop-heading">Shop all goods</h2>
+        </div>
+        <p class="section-intro">Practical pieces, honest materials, and a quieter approach to everyday living.</p>
+      </div>
+
+      <div class="shop-toolbar">
+        <div class="category-tabs" role="group" aria-label="Filter by category" data-category-tabs>
+          <button class="category-tab active" type="button" data-category="All">All</button>
+          <button class="category-tab" type="button" data-category="Home">Home</button>
+          <button class="category-tab" type="button" data-category="Carry">Carry</button>
+          <button class="category-tab" type="button" data-category="Desk">Desk</button>
+          <button class="category-tab" type="button" data-category="Outdoor">Outdoor</button>
+        </div>
+
+        <div class="toolbar-controls">
+          <label class="search-field">
+            <i data-lucide="search" aria-hidden="true"></i>
+            <span class="sr-only">Search products</span>
+            <input type="search" placeholder="Search goods" autocomplete="off" data-search-input>
+          </label>
+          <label class="sort-field">
+            <span>Sort by</span>
+            <select data-sort-select aria-label="Sort products">
+              <option value="featured">Featured</option>
+              <option value="price-low">Price: low to high</option>
+              <option value="price-high">Price: high to low</option>
+              <option value="rating">Top rated</option>
+            </select>
+            <i data-lucide="chevron-down" aria-hidden="true"></i>
+          </label>
+        </div>
+      </div>
+
+      <div class="result-meta" aria-live="polite">
+        <span data-result-count>8 products</span>
+        <button class="text-button" type="button" hidden data-clear-filters>Clear filters</button>
+      </div>
+
+      <div class="product-grid" data-product-grid></div>
+
+      <div class="empty-state" hidden data-empty-state>
+        <i data-lucide="search-x" aria-hidden="true"></i>
+        <h3>No goods found</h3>
+        <p>Try a different search or clear your filters.</p>
+        <button class="secondary-button" type="button" data-empty-clear>Clear filters</button>
+      </div>
+    </section>
+
+    <section class="collection-band" id="collections">
+      <div class="collection-image">
+        <img
+          src="https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&w=1400&q=85"
+          alt="Calm, functional workspace with natural materials"
+          loading="lazy"
+        >
+      </div>
+      <div class="collection-copy">
+        <p class="eyebrow">The workday edit</p>
+        <h2>Make space for focus.</h2>
+        <p>Tools that bring order to the desk and calm to the working day. Built to stay useful long after the inbox is empty.</p>
+        <button class="link-button" type="button" data-filter-link="Desk">
+          Explore desk goods
+          <i data-lucide="arrow-right" aria-hidden="true"></i>
+        </button>
+      </div>
+    </section>
+
+    <section class="values-section" id="story" aria-labelledby="values-heading">
+      <div>
+        <p class="eyebrow">Our standard</p>
+        <h2 id="values-heading">Fewer, better things.</h2>
+      </div>
+      <div class="values-grid">
+        <article>
+          <span>01</span>
+          <h3>Useful by design</h3>
+          <p>Every object earns its place through function, form, and daily usefulness.</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h3>Materials that last</h3>
+          <p>We favor repairable construction and honest materials that age well.</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>Thoughtful sourcing</h3>
+          <p>We work with makers who care about their craft and its wider impact.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-main">
+      <a class="brand footer-brand" href="/" aria-label="Northstar Supply home">
+        <span class="brand-mark" aria-hidden="true">N</span>
+        <span>NORTHSTAR<br>SUPPLY</span>
+      </a>
+      <div>
+        <h2>Stay in the loop.</h2>
+        <p>New goods, useful stories, and no unnecessary noise.</p>
+        <form class="newsletter-form" data-newsletter-form>
+          <label class="sr-only" for="newsletter-email">Email address</label>
+          <input id="newsletter-email" type="email" placeholder="Email address" required>
+          <button type="submit" aria-label="Subscribe">
+            <i data-lucide="arrow-right" aria-hidden="true"></i>
+          </button>
+        </form>
+        <p class="form-message" aria-live="polite" data-newsletter-message></p>
+      </div>
+      <div class="footer-links">
+        <div>
+          <h3>Help</h3>
+          <a href="#">Shipping & returns</a>
+          <a href="#">Contact</a>
+          <a href="#">FAQ</a>
+        </div>
+        <div>
+          <h3>Follow</h3>
+          <a href="#">Instagram</a>
+          <a href="#">Pinterest</a>
+          <a href="#">Journal</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Northstar Supply Co.</span>
+      <div><a href="#">Privacy</a><a href="#">Terms</a></div>
+    </div>
+  </footer>
+
+  <div class="drawer-backdrop" data-cart-backdrop></div>
+  <aside class="cart-drawer" aria-label="Shopping bag" aria-hidden="true" data-cart-drawer>
+    <div class="cart-header">
+      <div>
+        <p class="eyebrow">Your selection</p>
+        <h2>Shopping bag</h2>
+      </div>
+      <button class="icon-button" type="button" aria-label="Close shopping bag" data-cart-close>
+        <i data-lucide="x" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="shipping-progress">
+      <p data-shipping-message>Add $75.00 for free shipping</p>
+      <div><span data-shipping-bar></span></div>
+    </div>
+    <div class="cart-items" data-cart-items></div>
+    <div class="cart-empty" data-cart-empty>
+      <i data-lucide="shopping-bag" aria-hidden="true"></i>
+      <h3>Your bag is empty</h3>
+      <p>Start with something useful.</p>
+      <button class="secondary-button" type="button" data-cart-continue>Continue shopping</button>
+    </div>
+    <div class="cart-summary" hidden data-cart-summary>
+      <div><span>Subtotal</span><strong data-cart-subtotal>$0.00</strong></div>
+      <p>Taxes and shipping calculated at checkout.</p>
+      <button class="checkout-button" type="button">
+        Checkout
+        <i data-lucide="lock-keyhole" aria-hidden="true"></i>
+      </button>
+    </div>
+  </aside>
+
+  <div class="toast" role="status" aria-live="polite" data-toast></div>
+</body>
+</html>

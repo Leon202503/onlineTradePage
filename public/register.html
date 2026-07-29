@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Create your Northstar Supply account.">
+  <title>Create Account | Northstar Supply</title>
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="stylesheet" href="/stylesheets/auth.css">
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js" defer></script>
+  <script src="/javascripts/auth.js" defer></script>
+</head>
+<body>
+  <main class="auth-layout register-layout">
+    <section class="auth-visual" aria-label="Northstar Supply">
+      <img
+        src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1400&q=88"
+        alt="A bright organized desk with useful everyday tools"
+      >
+      <div class="auth-visual-shade"></div>
+      <a class="brand brand-light" href="/" aria-label="Northstar Supply home">
+        <span class="brand-mark" aria-hidden="true">N</span>
+        <span>NORTHSTAR<br>SUPPLY</span>
+      </a>
+      <div class="visual-copy">
+        <p class="eyebrow">Join Northstar</p>
+        <h1>Make room<br>for better.</h1>
+        <p>Save favorites, track orders, and check out with less friction.</p>
+      </div>
+      <p class="visual-note">Thoughtfully selected since 2018.</p>
+    </section>
+
+    <section class="auth-panel" aria-labelledby="register-heading">
+      <header class="mobile-header">
+        <a class="brand" href="/" aria-label="Northstar Supply home">
+          <span class="brand-mark" aria-hidden="true">N</span>
+          <span>NORTHSTAR<br>SUPPLY</span>
+        </a>
+        <a class="back-link" href="/">
+          <i data-lucide="arrow-left" aria-hidden="true"></i>
+          Shop
+        </a>
+      </header>
+
+      <div class="auth-content">
+        <a class="desktop-back-link" href="/">
+          <i data-lucide="arrow-left" aria-hidden="true"></i>
+          Back to shop
+        </a>
+
+        <div class="auth-heading">
+          <p class="eyebrow">Your account</p>
+          <h2 id="register-heading">Create an account</h2>
+          <p>Save your details for a smoother checkout.</p>
+        </div>
+
+        <div class="server-message" role="alert" hidden data-server-message></div>
+
+        <form class="auth-form" action="/api/register" method="post" data-auth-form data-register-form novalidate>
+          <div class="name-fields">
+            <div class="form-field">
+              <label for="first-name">First name</label>
+              <div class="input-control">
+                <input
+                  id="first-name"
+                  name="firstName"
+                  type="text"
+                  autocomplete="given-name"
+                  placeholder="First name"
+                  required
+                >
+              </div>
+              <p class="field-error" data-error-for="first-name"></p>
+            </div>
+
+            <div class="form-field">
+              <label for="last-name">Last name</label>
+              <div class="input-control">
+                <input
+                  id="last-name"
+                  name="lastName"
+                  type="text"
+                  autocomplete="family-name"
+                  placeholder="Last name"
+                  required
+                >
+              </div>
+              <p class="field-error" data-error-for="last-name"></p>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="register-email">Email address</label>
+            <div class="input-control">
+              <i data-lucide="mail" aria-hidden="true"></i>
+              <input
+                id="register-email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                placeholder="you@example.com"
+                required
+              >
+            </div>
+            <p class="field-error" data-error-for="register-email"></p>
+          </div>
+
+          <div class="form-field">
+            <label for="register-password">Password</label>
+            <div class="input-control">
+              <i data-lucide="lock-keyhole" aria-hidden="true"></i>
+              <input
+                id="register-password"
+                name="password"
+                type="password"
+                autocomplete="new-password"
+                placeholder="At least 8 characters"
+                minlength="8"
+                required
+                data-new-password
+              >
+              <button class="password-toggle" type="button" aria-label="Show password" data-password-toggle="register-password">
+                <i data-lucide="eye" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="password-strength" aria-hidden="true">
+              <span></span><span></span><span></span><span></span>
+            </div>
+            <p class="password-hint" data-password-hint>Use 8+ characters with a number.</p>
+            <p class="field-error" data-error-for="register-password"></p>
+          </div>
+
+          <div class="form-field">
+            <label for="confirm-password">Confirm password</label>
+            <div class="input-control">
+              <i data-lucide="shield-check" aria-hidden="true"></i>
+              <input
+                id="confirm-password"
+                name="confirmPassword"
+                type="password"
+                autocomplete="new-password"
+                placeholder="Enter the password again"
+                minlength="8"
+                required
+                data-confirm-password
+              >
+              <button class="password-toggle" type="button" aria-label="Show password" data-password-toggle="confirm-password">
+                <i data-lucide="eye" aria-hidden="true"></i>
+              </button>
+            </div>
+            <p class="field-error" data-error-for="confirm-password"></p>
+          </div>
+
+          <label class="check-control terms-control">
+            <input type="checkbox" name="terms" value="accepted" required data-terms>
+            <span aria-hidden="true"><i data-lucide="check"></i></span>
+            <span>I agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</span>
+          </label>
+          <p class="field-error terms-error" data-error-for="terms"></p>
+
+          <button class="submit-button" type="submit">
+            Create account
+            <i data-lucide="arrow-right" aria-hidden="true"></i>
+          </button>
+        </form>
+
+        <p class="auth-switch">Already have an account? <a href="/login">Sign in</a></p>
+      </div>
+
+      <footer class="auth-footer">
+        <span>© 2026 Northstar Supply Co.</span>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+      </footer>
+    </section>
+  </main>
+</body>
+</html>
