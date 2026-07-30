@@ -126,10 +126,6 @@
       <div class="shop-toolbar">
         <div class="category-tabs" role="group" aria-label="Filter by category" data-category-tabs>
           <button class="category-tab active" type="button" data-category="All">All</button>
-          <button class="category-tab" type="button" data-category="Home">Home</button>
-          <button class="category-tab" type="button" data-category="Carry">Carry</button>
-          <button class="category-tab" type="button" data-category="Desk">Desk</button>
-          <button class="category-tab" type="button" data-category="Outdoor">Outdoor</button>
         </div>
 
         <div class="toolbar-controls">
@@ -152,7 +148,7 @@
       </div>
 
       <div class="result-meta" aria-live="polite">
-        <span data-result-count>8 products</span>
+        <span data-result-count>Loading goods</span>
         <button class="text-button" type="button" hidden data-clear-filters>Clear filters</button>
       </div>
 
@@ -274,10 +270,10 @@
     <div class="cart-summary" hidden data-cart-summary>
       <div><span>Subtotal</span><strong data-cart-subtotal>$0.00</strong></div>
       <p>Taxes and shipping calculated at checkout.</p>
-      <button class="checkout-button" type="button">
+      <a class="checkout-button" href="/checkout.html">
         Checkout
         <i data-lucide="lock-keyhole" aria-hidden="true"></i>
-      </button>
+      </a>
     </div>
   </aside>
 

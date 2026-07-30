@@ -1,87 +1,19 @@
-const products = [
-  {
-    id: 1,
-    name: "Ridge Ceramic Mug",
-    category: "Home",
-    price: 28,
-    rating: 4.9,
-    badge: "Bestseller",
-    image: "https://images.unsplash.com/photo-1577937927133-66ef06acdf18?auto=format&fit=crop&w=800&q=82",
-    colors: ["#ddd4c4", "#738172", "#262b29"]
-  },
-  {
-    id: 2,
-    name: "Field Daypack",
-    category: "Carry",
-    price: 98,
-    rating: 4.8,
-    badge: "New",
-    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=82",
-    colors: ["#31483b", "#b8a17c", "#24282a"]
-  },
-  {
-    id: 3,
-    name: "Orbit Desk Lamp",
-    category: "Desk",
-    price: 124,
-    rating: 4.7,
-    image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=82",
-    colors: ["#d9caa9", "#2e3b35"]
-  },
-  {
-    id: 4,
-    name: "Linen Throw",
-    category: "Home",
-    price: 72,
-    rating: 4.6,
-    image: "https://images.unsplash.com/photo-1583845112203-29329902332e?auto=format&fit=crop&w=800&q=82",
-    colors: ["#d8d0bd", "#bc7962", "#677267"]
-  },
-  {
-    id: 5,
-    name: "Canvas Market Tote",
-    category: "Carry",
-    price: 42,
-    rating: 4.9,
-    badge: "Low stock",
-    image: "https://images.unsplash.com/photo-1594223274512-ad4803739b7c?auto=format&fit=crop&w=800&q=82",
-    colors: ["#ddd6c3", "#b1a37e"]
-  },
-  {
-    id: 6,
-    name: "Brass Desk Tray",
-    category: "Desk",
-    price: 46,
-    rating: 4.5,
-    image: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=800&q=82",
-    colors: ["#b28b47"]
-  },
-  {
-    id: 7,
-    name: "Trail Flask",
-    category: "Outdoor",
-    price: 36,
-    rating: 4.8,
-    badge: "New",
-    image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=800&q=82",
-    colors: ["#293f35", "#cc6a45", "#c1bba8"]
-  },
-  {
-    id: 8,
-    name: "Woven Picnic Rug",
-    category: "Outdoor",
-    price: 86,
-    rating: 4.7,
-    image: "https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=800&q=82",
-    colors: ["#b85139", "#d1b66f", "#435b4c"]
+let products = [];
+
+function readStoredCart() {
+  try {
+    const saved = JSON.parse(localStorage.getItem("northstar-cart") || "[]");
+    return saved.map(([id, quantity]) => [Number(id), Number(quantity)]);
+  } catch {
+    return [];
   }
-];
+}
 
 const state = {
   category: "All",
   search: "",
   sort: "featured",
-  cart: new Map(),
+  cart: new Map(readStoredCart()),
   favorites: new Set()
 };
 
@@ -91,7 +23,7 @@ const els = {
   empty: document.querySelector("[data-empty-state]"),
   search: document.querySelector("[data-search-input]"),
   sort: document.querySelector("[data-sort-select]"),
-  tabs: document.querySelectorAll("[data-category]"),
+  tabs: document.querySelector("[data-category-tabs]"),
   clear: document.querySelector("[data-clear-filters]"),
   drawer: document.querySelector("[data-cart-drawer]"),
   cartItems: document.querySelector("[data-cart-items]"),
@@ -104,6 +36,19 @@ const els = {
   toast: document.querySelector("[data-toast]")
 };
 
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function saveCart() {
+  localStorage.setItem("northstar-cart", JSON.stringify([...state.cart.entries()]));
+}
+
 function money(value) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -112,35 +57,110 @@ function money(value) {
 }
 
 function productCard(product) {
-  const badge = product.badge ? `<span class="product-badge">${product.badge}</span>` : "";
-  const swatches = product.colors
-    .map(color => `<span class="color-swatch" style="background:${color}" aria-hidden="true"></span>`)
-    .join("");
+  const name = escapeHtml(product.name);
+  const category = escapeHtml(product.category);
+  const badge = product.badge ? `<span class="product-badge">${escapeHtml(product.badge)}</span>` : "";
+  const image = product.image
+    ? `<img src="${escapeHtml(product.image)}" alt="${name}" loading="lazy">`
+    : `<div class="missing-product-image" aria-label="No image available"><i data-lucide="image" aria-hidden="true"></i></div>`;
+  const soldOut = product.stock <= 0;
 
   return `
     <article class="product-card">
       <div class="product-image">
         ${badge}
-        <img src="${product.image}" alt="${product.name}" loading="lazy">
+        <a class="product-image-link" href="/product?id=${product.id}" aria-label="View ${name}">
+          ${image}
+        </a>
         <button class="favorite-button ${state.favorites.has(product.id) ? "active" : ""}" type="button"
           aria-label="${state.favorites.has(product.id) ? "Remove from" : "Add to"} favorites"
           data-favorite="${product.id}">
           <i data-lucide="heart" aria-hidden="true"></i>
         </button>
-        <button class="quick-add" type="button" data-add="${product.id}">Quick add · ${money(product.price)}</button>
+        <button class="quick-add" type="button" data-add="${product.id}" ${soldOut ? "disabled" : ""}>
+          ${soldOut ? "Sold out" : `Quick add · ${money(product.price)}`}
+        </button>
       </div>
       <div class="product-info">
         <div class="product-kicker">
-          <span>${product.category}</span>
+          <span>${category}</span>
           <span class="rating"><i data-lucide="star" aria-hidden="true"></i>${product.rating}</span>
         </div>
         <div class="product-title-row">
-          <h3>${product.name}</h3>
+          <h3><a href="/product?id=${product.id}">${name}</a></h3>
           <p>${money(product.price)}</p>
         </div>
-        <div class="product-colors" aria-label="${product.colors.length} available colors">${swatches}</div>
       </div>
     </article>`;
+}
+
+function renderCategories() {
+  const categories = [...new Set(products.map(product => product.category).filter(Boolean))]
+    .sort((a, b) => a.localeCompare(b));
+
+  els.tabs.innerHTML = ["All", ...categories]
+    .map(category => `
+      <button class="category-tab ${category === state.category ? "active" : ""}" type="button"
+        data-category="${escapeHtml(category)}">${escapeHtml(category)}</button>
+    `)
+    .join("");
+}
+
+function renderLoadingProducts() {
+  els.count.textContent = "Loading goods";
+  els.empty.hidden = true;
+  els.grid.hidden = false;
+  els.grid.innerHTML = Array.from({ length: 4 }, () => `
+    <div class="product-skeleton" aria-hidden="true">
+      <div></div>
+      <span></span>
+      <span></span>
+    </div>
+  `).join("");
+}
+
+function showProductMessage(title, message) {
+  els.grid.hidden = true;
+  els.empty.hidden = false;
+  els.empty.querySelector("h3").textContent = title;
+  els.empty.querySelector("p").textContent = message;
+  els.count.textContent = "0 products";
+}
+
+async function loadProducts() {
+  renderLoadingProducts();
+  els.search.disabled = true;
+  els.sort.disabled = true;
+
+  try {
+    const response = await fetch("/api/getProducts");
+    const result = await response.json();
+
+    if (!response.ok || !result.success || !Array.isArray(result.products)) {
+      throw new Error(result.message || "Invalid product response");
+    }
+
+    products = result.products.map(product => ({
+      ...product,
+      id: Number(product.id),
+      price: Number(product.price),
+      rating: Number(product.rating || 0),
+      stock: Number(product.stock || 0)
+    }));
+
+    renderCategories();
+    renderProducts();
+    renderCart();
+    if (new URLSearchParams(window.location.search).get("cart") === "open") {
+      openCart();
+    }
+  } catch (error) {
+    console.error("Failed to load products", error);
+    showProductMessage("Unable to load goods", "Please refresh the page and try again.");
+  } finally {
+    els.search.disabled = false;
+    els.sort.disabled = false;
+  }
 }
 
 function renderProducts() {
@@ -185,11 +205,15 @@ function closeCart() {
 }
 
 function cartItemRow(product, quantity) {
+  const image = product.image
+    ? `<img src="${escapeHtml(product.image)}" alt="">`
+    : `<div class="cart-item-image-missing"><i data-lucide="image" aria-hidden="true"></i></div>`;
+
   return `
     <article class="cart-item">
-      <img src="${product.image}" alt="">
+      ${image}
       <div>
-        <h3>${product.name}</h3>
+        <h3><a href="/product?id=${product.id}">${escapeHtml(product.name)}</a></h3>
         <p>${money(product.price)}</p>
         <div class="quantity-control" aria-label="Quantity">
           <button type="button" aria-label="Decrease quantity" data-quantity="${product.id}" data-change="-1">−</button>
@@ -230,7 +254,9 @@ function renderCart() {
 
 function setCategory(category) {
   state.category = category;
-  els.tabs.forEach(tab => tab.classList.toggle("active", tab.dataset.category === category));
+  els.tabs.querySelectorAll("[data-category]").forEach(tab => {
+    tab.classList.toggle("active", tab.dataset.category === category);
+  });
   renderProducts();
 }
 
@@ -280,7 +306,14 @@ document.addEventListener("click", event => {
 
   if (addButton) {
     const id = Number(addButton.dataset.add);
+    const product = products.find(item => item.id === id);
+    const quantity = state.cart.get(id) || 0;
+    if (!product || product.stock <= quantity) {
+      showToast("This item is out of stock");
+      return;
+    }
     state.cart.set(id, (state.cart.get(id) || 0) + 1);
+    saveCart();
     renderCart();
     showToast("Added to your bag");
   }
@@ -295,16 +328,21 @@ document.addEventListener("click", event => {
     const id = Number(quantityButton.dataset.quantity);
     const next = (state.cart.get(id) || 0) + Number(quantityButton.dataset.change);
     next > 0 ? state.cart.set(id, next) : state.cart.delete(id);
+    saveCart();
     renderCart();
   }
 
   if (removeButton) {
     state.cart.delete(Number(removeButton.dataset.remove));
+    saveCart();
     renderCart();
   }
 });
 
-els.tabs.forEach(tab => tab.addEventListener("click", () => setCategory(tab.dataset.category)));
+els.tabs.addEventListener("click", event => {
+  const tab = event.target.closest("[data-category]");
+  if (tab) setCategory(tab.dataset.category);
+});
 els.search.addEventListener("input", event => {
   state.search = event.target.value;
   renderProducts();
@@ -367,7 +405,6 @@ document.addEventListener("keydown", event => {
   }
 });
 
-renderProducts();
-renderCart();
+loadProducts();
 loadAccount();
 window.addEventListener("load", refreshIcons);

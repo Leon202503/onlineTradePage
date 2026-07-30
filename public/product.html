@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Product details from Northstar Supply.">
+  <title>Product | Northstar Supply</title>
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="stylesheet" href="/stylesheets/style.css">
+  <link rel="stylesheet" href="/stylesheets/product.css">
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js" defer></script>
+  <script src="/javascripts/product.js" defer></script>
+</head>
+<body class="product-page">
+  <header class="site-header">
+    <div class="detail-header-inner">
+      <a class="brand" href="/" aria-label="Northstar Supply home">
+        <span class="brand-mark" aria-hidden="true">N</span>
+        <span>NORTHSTAR<br>SUPPLY</span>
+      </a>
+
+      <a class="back-to-shop" href="/#shop">
+        <i data-lucide="arrow-left" aria-hidden="true"></i>
+        Back to shop
+      </a>
+
+      <div class="detail-header-actions">
+        <a class="icon-button" href="/login" aria-label="Your account">
+          <i data-lucide="user-round" aria-hidden="true"></i>
+        </a>
+        <a class="detail-bag-link" href="/?cart=open" aria-label="Open shopping bag">
+          <i data-lucide="shopping-bag" aria-hidden="true"></i>
+          <span>Bag</span>
+          <span class="cart-count" data-detail-cart-count>0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="detail-loading" data-detail-loading>
+      <div class="detail-image-skeleton"></div>
+      <div class="detail-copy-skeleton">
+        <span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <section class="product-detail" hidden data-product-detail>
+      <div class="detail-image">
+        <img src="" alt="" data-detail-image>
+        <div class="detail-image-missing" hidden data-detail-image-missing>
+          <i data-lucide="image" aria-hidden="true"></i>
+          <span>Image unavailable</span>
+        </div>
+      </div>
+
+      <div class="detail-content">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <a href="/">Home</a>
+          <i data-lucide="chevron-right" aria-hidden="true"></i>
+          <a href="/#shop">Shop</a>
+          <i data-lucide="chevron-right" aria-hidden="true"></i>
+          <span data-detail-breadcrumb>Product</span>
+        </nav>
+
+        <div class="detail-title">
+          <div class="detail-meta">
+            <span data-detail-category></span>
+            <span class="detail-rating">
+              <i data-lucide="star" aria-hidden="true"></i>
+              <span data-detail-rating></span>
+            </span>
+          </div>
+          <h1 data-detail-name></h1>
+          <p class="detail-price" data-detail-price></p>
+          <span class="detail-badge" hidden data-detail-badge></span>
+        </div>
+
+        <div class="stock-status" data-stock-status>
+          <span></span>
+          <strong></strong>
+        </div>
+
+        <div class="purchase-row">
+          <div class="detail-quantity" aria-label="Quantity">
+            <button type="button" aria-label="Decrease quantity" data-detail-decrease>
+              <i data-lucide="minus" aria-hidden="true"></i>
+            </button>
+            <span data-detail-quantity>1</span>
+            <button type="button" aria-label="Increase quantity" data-detail-increase>
+              <i data-lucide="plus" aria-hidden="true"></i>
+            </button>
+          </div>
+          <button class="detail-add-button" type="button" data-detail-add>
+            Add to bag
+            <i data-lucide="shopping-bag" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <dl class="detail-specs">
+          <div>
+            <dt>Category</dt>
+            <dd data-spec-category></dd>
+          </div>
+          <div>
+            <dt>Item number</dt>
+            <dd data-spec-id></dd>
+          </div>
+          <div>
+            <dt>Availability</dt>
+            <dd data-spec-stock></dd>
+          </div>
+          <div>
+            <dt>Added</dt>
+            <dd data-spec-created></dd>
+          </div>
+        </dl>
+
+        <div class="detail-service">
+          <div>
+            <i data-lucide="truck" aria-hidden="true"></i>
+            <span><strong>Free shipping</strong> on orders over $75</span>
+          </div>
+          <div>
+            <i data-lucide="rotate-ccw" aria-hidden="true"></i>
+            <span><strong>Easy returns</strong> within 30 days</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="detail-lower" hidden data-detail-lower>
+      <section class="description-section" aria-labelledby="description-heading">
+        <div>
+          <p class="eyebrow">About this item</p>
+          <h2 id="description-heading">Product details</h2>
+        </div>
+        <div class="description-copy">
+          <p data-detail-description>No product description has been added yet.</p>
+        </div>
+      </section>
+
+      <section class="reviews-section" aria-labelledby="reviews-heading">
+        <header class="reviews-header">
+          <div>
+            <p class="eyebrow">Customer feedback</p>
+            <h2 id="reviews-heading">Ratings & reviews</h2>
+          </div>
+          <button class="secondary-button" type="button" data-review-open>
+            <i data-lucide="message-square-plus" aria-hidden="true"></i>
+            Write a review
+          </button>
+        </header>
+
+        <div class="reviews-overview">
+          <div class="rating-total">
+            <strong data-review-average>0.0</strong>
+            <div class="review-stars" aria-label="Average rating" data-review-average-stars></div>
+            <span data-review-count>No written reviews</span>
+          </div>
+          <div class="rating-breakdown" data-rating-breakdown>
+            <div data-rating-row="5"><span>5</span><i data-lucide="star" aria-hidden="true"></i><div><b></b></div><em>0</em></div>
+            <div data-rating-row="4"><span>4</span><i data-lucide="star" aria-hidden="true"></i><div><b></b></div><em>0</em></div>
+            <div data-rating-row="3"><span>3</span><i data-lucide="star" aria-hidden="true"></i><div><b></b></div><em>0</em></div>
+            <div data-rating-row="2"><span>2</span><i data-lucide="star" aria-hidden="true"></i><div><b></b></div><em>0</em></div>
+            <div data-rating-row="1"><span>1</span><i data-lucide="star" aria-hidden="true"></i><div><b></b></div><em>0</em></div>
+          </div>
+        </div>
+
+        <div class="review-list" data-review-list></div>
+
+        <div class="reviews-empty" data-reviews-empty>
+          <i data-lucide="message-square" aria-hidden="true"></i>
+          <h3>No written reviews yet</h3>
+          <p>Share your experience with this product.</p>
+        </div>
+      </section>
+    </div>
+
+    <section class="detail-error" hidden data-detail-error>
+      <i data-lucide="package-x" aria-hidden="true"></i>
+      <h1 data-detail-error-title>Product not found</h1>
+      <p data-detail-error-message>This product may no longer be available.</p>
+      <a class="secondary-button" href="/#shop">Return to shop</a>
+    </section>
+  </main>
+
+  <dialog class="review-dialog" data-review-dialog>
+    <form class="review-form" data-review-form>
+      <div class="review-dialog-header">
+        <div>
+          <p class="eyebrow">Your experience</p>
+          <h2>Write a review</h2>
+        </div>
+        <button class="icon-button" type="button" aria-label="Close review form" data-review-close>
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <div class="review-product-name" data-review-product-name></div>
+
+      <fieldset class="review-rating-field">
+        <legend>Your rating</legend>
+        <div class="review-rating-input" aria-label="Choose a rating">
+          <button type="button" aria-label="1 star" data-review-rating="1"><i data-lucide="star"></i></button>
+          <button type="button" aria-label="2 stars" data-review-rating="2"><i data-lucide="star"></i></button>
+          <button type="button" aria-label="3 stars" data-review-rating="3"><i data-lucide="star"></i></button>
+          <button type="button" aria-label="4 stars" data-review-rating="4"><i data-lucide="star"></i></button>
+          <button type="button" aria-label="5 stars" data-review-rating="5"><i data-lucide="star"></i></button>
+        </div>
+        <p class="review-form-error" data-review-rating-error></p>
+      </fieldset>
+
+      <label class="review-field">
+        <span>Review title</span>
+        <input type="text" name="title" maxlength="100" placeholder="Summarize your experience" required>
+      </label>
+
+      <label class="review-field">
+        <span>Your review</span>
+        <textarea name="comment" rows="5" maxlength="1000" placeholder="What did you like or dislike?" required></textarea>
+        <small><span data-review-character-count>0</span>/1000</small>
+      </label>
+
+      <p class="review-submit-message" aria-live="polite" data-review-submit-message></p>
+
+      <button class="detail-add-button review-submit-button" type="submit">
+        Submit review
+        <i data-lucide="arrow-right" aria-hidden="true"></i>
+      </button>
+    </form>
+  </dialog>
+
+  <div class="toast" role="status" aria-live="polite" data-detail-toast></div>
+</body>
+</html>

@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Complete your Northstar Supply order.">
+  <title>Checkout | Northstar Supply</title>
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="stylesheet" href="/stylesheets/style.css">
+  <link rel="stylesheet" href="/stylesheets/checkout.css">
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js" defer></script>
+  <script src="/javascripts/checkout.js" defer></script>
+</head>
+<body class="checkout-page">
+  <header class="checkout-header">
+    <div>
+      <a class="brand" href="/" aria-label="Northstar Supply home">
+        <span class="brand-mark" aria-hidden="true">N</span>
+        <span>NORTHSTAR<br>SUPPLY</span>
+      </a>
+      <div class="secure-checkout">
+        <i data-lucide="lock-keyhole" aria-hidden="true"></i>
+        Secure checkout
+      </div>
+      <a class="checkout-bag" href="/?cart=open" aria-label="Return to shopping bag">
+        <i data-lucide="shopping-bag" aria-hidden="true"></i>
+        <span data-checkout-count>0</span>
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <div class="checkout-loading" data-checkout-loading>
+      <div><span></span><span></span><span></span></div>
+      <div><span></span><span></span></div>
+    </div>
+
+    <div class="checkout-layout" hidden data-checkout-layout>
+      <form class="checkout-form" data-checkout-form novalidate>
+        <nav class="checkout-breadcrumbs" aria-label="Checkout progress">
+          <a href="/?cart=open">Bag</a>
+          <i data-lucide="chevron-right" aria-hidden="true"></i>
+          <strong>Information</strong>
+          <i data-lucide="chevron-right" aria-hidden="true"></i>
+          <span>Review</span>
+        </nav>
+
+        <section class="checkout-section" aria-labelledby="contact-heading">
+          <div class="checkout-section-heading">
+            <div>
+              <span>01</span>
+              <h1 id="contact-heading">Contact</h1>
+            </div>
+            <p data-checkout-login-prompt>Already have an account? <a href="/login">Sign in</a></p>
+          </div>
+
+          <label class="checkout-field full-field">
+            <span>Email address</span>
+            <input type="email" name="email" autocomplete="email" placeholder="you@example.com" required>
+          </label>
+
+          <label class="checkout-checkbox">
+            <input type="checkbox" name="newsletter" value="true">
+            <span aria-hidden="true"><i data-lucide="check"></i></span>
+            Email me with news and offers
+          </label>
+        </section>
+
+        <section class="checkout-section" aria-labelledby="delivery-heading">
+          <div class="checkout-section-heading">
+            <div>
+              <span>02</span>
+              <h2 id="delivery-heading">Delivery</h2>
+            </div>
+          </div>
+
+          <div class="checkout-fields">
+            <label class="checkout-field full-field">
+              <span>Country / region</span>
+              <select name="country" autocomplete="country-name" required>
+                <option value="">Select a country</option>
+                <option value="China">China</option>
+                <option value="United States">United States</option>
+                <option value="United Kingdom">United Kingdom</option>
+                <option value="Canada">Canada</option>
+                <option value="Australia">Australia</option>
+                <option value="Japan">Japan</option>
+                <option value="Singapore">Singapore</option>
+              </select>
+              <i data-lucide="chevron-down" aria-hidden="true"></i>
+            </label>
+
+            <label class="checkout-field">
+              <span>First name</span>
+              <input type="text" name="firstName" autocomplete="given-name" placeholder="First name" required>
+            </label>
+
+            <label class="checkout-field">
+              <span>Last name</span>
+              <input type="text" name="lastName" autocomplete="family-name" placeholder="Last name" required>
+            </label>
+
+            <label class="checkout-field full-field">
+              <span>Address</span>
+              <input type="text" name="address" autocomplete="street-address" placeholder="Street and house number" required>
+            </label>
+
+            <label class="checkout-field full-field">
+              <span>Apartment, suite, etc. <em>Optional</em></span>
+              <input type="text" name="apartment" autocomplete="address-line2" placeholder="Apartment or unit">
+            </label>
+
+            <label class="checkout-field">
+              <span>City</span>
+              <input type="text" name="city" autocomplete="address-level2" placeholder="City" required>
+            </label>
+
+            <label class="checkout-field">
+              <span>State / province</span>
+              <input type="text" name="province" autocomplete="address-level1" placeholder="State or province" required>
+            </label>
+
+            <label class="checkout-field">
+              <span>Postal code</span>
+              <input type="text" name="postalCode" autocomplete="postal-code" placeholder="Postal code" required>
+            </label>
+
+            <label class="checkout-field">
+              <span>Phone</span>
+              <input type="tel" name="phone" autocomplete="tel" placeholder="Phone number" required>
+            </label>
+          </div>
+        </section>
+
+        <section class="checkout-section" aria-labelledby="shipping-heading">
+          <div class="checkout-section-heading">
+            <div>
+              <span>03</span>
+              <h2 id="shipping-heading">Shipping method</h2>
+            </div>
+          </div>
+
+          <div class="shipping-options">
+            <label>
+              <input type="radio" name="shippingMethod" value="standard" checked>
+              <span class="shipping-radio" aria-hidden="true"></span>
+              <span><strong>Standard shipping</strong><small>4–7 business days</small></span>
+              <b data-standard-shipping>Free</b>
+            </label>
+            <label>
+              <input type="radio" name="shippingMethod" value="express">
+              <span class="shipping-radio" aria-hidden="true"></span>
+              <span><strong>Express shipping</strong><small>2–3 business days</small></span>
+              <b>$18.00</b>
+            </label>
+          </div>
+        </section>
+
+        <section class="checkout-section" aria-labelledby="payment-heading">
+          <div class="checkout-section-heading">
+            <div>
+              <span>04</span>
+              <h2 id="payment-heading">Payment</h2>
+            </div>
+          </div>
+
+          <label class="payment-option">
+            <input type="radio" name="paymentMethod" value="cash_on_delivery" checked>
+            <span class="shipping-radio" aria-hidden="true"></span>
+            <i data-lucide="banknote" aria-hidden="true"></i>
+            <span><strong>Cash on delivery</strong><small>Pay when your order arrives</small></span>
+          </label>
+        </section>
+
+        <p class="checkout-form-message" role="alert" data-checkout-message></p>
+
+        <div class="checkout-submit-row">
+          <a href="/?cart=open">
+            <i data-lucide="arrow-left" aria-hidden="true"></i>
+            Return to bag
+          </a>
+          <button class="place-order-button" type="submit">
+            Place order
+            <i data-lucide="arrow-right" aria-hidden="true"></i>
+          </button>
+        </div>
+      </form>
+
+      <aside class="checkout-summary" aria-labelledby="summary-heading">
+        <div class="summary-heading">
+          <div>
+            <p class="eyebrow">Your selection</p>
+            <h2 id="summary-heading">Order summary</h2>
+          </div>
+          <a href="/?cart=open">Edit bag</a>
+        </div>
+
+        <div class="checkout-items" data-checkout-items></div>
+
+        <dl class="summary-totals">
+          <div><dt>Subtotal</dt><dd data-checkout-subtotal>$0.00</dd></div>
+          <div><dt>Shipping</dt><dd data-checkout-shipping>Free</dd></div>
+          <div class="summary-total"><dt>Total</dt><dd data-checkout-total>$0.00</dd></div>
+        </dl>
+
+        <div class="checkout-assurance">
+          <div><i data-lucide="shield-check" aria-hidden="true"></i><span><strong>Secure checkout</strong>Your details are protected</span></div>
+          <div><i data-lucide="rotate-ccw" aria-hidden="true"></i><span><strong>Easy returns</strong>Within 30 days</span></div>
+        </div>
+      </aside>
+    </div>
+
+    <section class="checkout-empty" hidden data-checkout-empty>
+      <i data-lucide="shopping-bag" aria-hidden="true"></i>
+      <h1>Your bag is empty</h1>
+      <p>Add something useful before heading to checkout.</p>
+      <a class="secondary-button" href="/#shop">Continue shopping</a>
+    </section>
+
+    <section class="checkout-success" hidden data-checkout-success>
+      <span><i data-lucide="check" aria-hidden="true"></i></span>
+      <p class="eyebrow">Order received</p>
+      <h1>Thank you for your order.</h1>
+      <p>Your order number is <strong data-order-number></strong>.</p>
+      <a class="secondary-button" href="/">Return to shop</a>
+    </section>
+  </main>
+</body>
+</html>
