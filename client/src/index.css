@@ -1,0 +1,33 @@
+#root { min-height: 100vh; }
+button:disabled { cursor: not-allowed; }
+.react-spin { animation: react-spin .9s linear infinite; }
+@keyframes react-spin { to { transform: rotate(360deg); } }
+.route-status { min-height: 60vh; display: grid; place-content: center; justify-items: center; gap: 14px; padding: 40px; text-align: center; }
+.route-status svg { width: 30px; height: 30px; }
+.react-modal-backdrop { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: 20px; background: rgba(12, 19, 16, .62); }
+.react-review-dialog { width: min(560px, 100%); max-height: calc(100vh - 40px); overflow: auto; border: 0; background: var(--paper); box-shadow: 0 24px 70px rgba(0, 0, 0, .3); }
+.react-review-dialog .review-form { padding: 28px; }
+.review-stars-row { display: flex; gap: 5px; }
+.review-stars-row svg { width: 16px; fill: var(--yellow); color: var(--ink); }
+.review-stars-row svg.empty { fill: transparent; }
+.review-card-react { padding: 24px 0; border-top: 1px solid var(--line); }
+.review-card-react h3, .review-card-react p { margin: 8px 0 0; }
+.review-card-react header { display: flex; justify-content: space-between; gap: 20px; color: var(--muted); font-size: 11px; }
+.auth-submit-error { margin: 0 0 16px; color: var(--error, #b43525); font-size: 12px; }
+.checkout-success-icon { display: grid; width: 54px; height: 54px; place-items: center; margin: 0 auto 20px; border-radius: 50%; background: var(--green); color: white; }
+.react-account-wrap { position: relative; }
+.react-account-wrap:hover .account-popover, .react-account-wrap:focus-within .account-popover { display: block; }
+.account-popover-form { padding: 8px; border-top: 1px solid var(--line); }
+.react-product-loading { grid-column: 1 / -1; min-height: 260px; display: grid; place-content: center; justify-items: center; gap: 12px; }
+.react-checkbox-row { display: flex; align-items: center; gap: 8px; }
+.mobile-copy-break { display: none; }
+@media (max-width: 760px) {
+  .react-review-dialog .review-form { padding: 20px; }
+  .header-inner { position: relative; }
+  .header-actions { position: absolute; top: 13px; right: 0; width: 124px; justify-content: flex-end; }
+  .header-actions .header-search-button { display: none; }
+  .header-actions .icon-button { width: 36px; }
+  .header-actions .mobile-menu-button { order: 0; }
+  .header-actions .cart-button { width: 44px; padding: 0; }
+  .mobile-copy-break { display: initial; }
+}

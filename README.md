@@ -1,6 +1,6 @@
 # Northstar Supply
 
-Northstar Supply is a responsive single-store e-commerce project built with native HTML, CSS, and JavaScript. Its server-side functionality is implemented with Express and MySQL, including authentication, database-backed products, product reviews, and session-based login state.
+Northstar Supply is a responsive single-store e-commerce project with a React frontend and an Express/MySQL backend. It includes authentication, database-backed products, product reviews, a persistent shopping bag, and a complete checkout interface.
 
 [GitHub Repository](https://github.com/Leon202503/onlineTradePage)
 
@@ -105,7 +105,10 @@ Example product-detail response structure:
 
 - HTML5
 - CSS3
-- Vanilla JavaScript
+- React 19
+- React Router
+- Vite
+- Lucide React
 - Node.js
 - Express 4
 - MySQL / `mysql2`
@@ -119,6 +122,16 @@ Example product-detail response structure:
 04-onlineTrade/
 |-- bin/
 |   `-- www
+|-- client/
+|   |-- public/
+|   |-- src/
+|   |   |-- components/
+|   |   |-- context/
+|   |   |-- pages/
+|   |   |-- services/
+|   |   `-- utils/
+|   |-- package.json
+|   `-- vite.config.js
 |-- docs/
 |   `-- screenshots/
 |-- public/
@@ -189,17 +202,26 @@ products   1 ---- N  order_items
 git clone https://github.com/Leon202503/onlineTradePage.git
 cd onlineTradePage
 npm install
+cd client
+npm install
 ```
 
 Create a MySQL database named `onlinetrade`, create the required tables, and configure the local connection in `db.js`.
 
-Start the application:
+Start Express in the project root:
 
 ```bash
 npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Start React in a second terminal:
+
+```bash
+cd client
+npm run dev
+```
+
+Open [http://localhost:5173](http://localhost:5173). Vite proxies `/api` requests to Express on port `3000`.
 
 ## Security Notes
 
@@ -225,7 +247,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 # 中文介绍
 
-Northstar Supply 是一个单店铺英文购物网站，前端使用原生 HTML、CSS 和 JavaScript，后端使用 Express 与 MySQL。项目已经实现用户认证、数据库商品读取、商品详情、评分评论和前端结账流程。
+Northstar Supply 是一个单店铺英文购物网站，前端使用 React、React Router 和 Vite，后端使用 Express 与 MySQL。项目已经实现用户认证、数据库商品读取、商品详情、评分评论、购物车和前端结账流程。
 
 ## 后端代码 - 我的主要工作
 
@@ -278,10 +300,18 @@ npm install
 npm start
 ```
 
+再打开第二个终端启动 React：
+
+```bash
+cd client
+npm install
+npm run dev
+```
+
 然后访问：
 
 ```text
-http://localhost:3000
+http://localhost:5173
 ```
 
 ## 后续计划
