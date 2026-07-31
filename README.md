@@ -1,46 +1,114 @@
 # Northstar Supply
 
-Northstar Supply is a responsive online shopping demo built with native HTML, CSS, and JavaScript, backed by Express and MySQL. It includes a product storefront, registration and sign-in pages, password hashing, session-based authentication, and an account popover for signed-in users.
+Northstar Supply is a responsive single-store e-commerce project built with native HTML, CSS, and JavaScript. Its server-side functionality is implemented with Express and MySQL, including authentication, database-backed products, product reviews, and session-based login state.
 
-Repository: [Leon202503/onlineTradePage](https://github.com/Leon202503/onlineTradePage)
+[GitHub Repository](https://github.com/Leon202503/onlineTradePage)
 
-## Features
+## Preview
 
-### Storefront
+### Product Details
 
-- Responsive desktop and mobile layouts
-- Product category filters
-- Product search and sorting
-- Favorites interaction
-- Shopping bag drawer
-- Quantity and subtotal calculation
+![Northstar Supply product detail page](docs/screenshots/product-detail.png)
+
+### Checkout
+
+![Northstar Supply checkout page](docs/screenshots/checkout.png)
+
+## Backend Implementation - My Work
+
+I designed and wrote the Express/MySQL backend used by this project. The frontend does not rely on hard-coded product data: active products, product details, ratings, and reviews are loaded from MySQL through Express endpoints.
+
+The backend currently includes:
+
+- Customer registration with server-side validation
+- Password hashing with `bcryptjs` using 12 salt rounds
+- Parameterized SQL queries to reduce SQL injection risk
+- Customer login with password verification
+- Session regeneration after login to establish authenticated state
+- Session status checks and logout handling
+- Product listing loaded from the `products` table
+- Individual product details loaded by product ID
+- Review loading and average-rating calculation
+- Rating breakdown calculation for scores from 1 to 5
+- Authenticated review submission with input validation
+- Consistent JSON responses and HTTP status codes
+
+Example authentication flow:
+
+```javascript
+const [customers] = await db.promise().query(sql, [email]);
+const passwordMatches = await bcrypt.compare(password, customers[0].password);
+
+req.session.regenerate(error => {
+  if (error) {
+    return res.status(500).json({ message: "Session error" });
+  }
+
+  req.session.user = {
+    id: customers[0].id,
+    firstName: customers[0].first_name,
+    lastName: customers[0].last_name,
+    email: customers[0].email
+  };
+
+  req.session.save(saveError => {
+    if (saveError) {
+      return res.status(500).json({ message: "Session save failed" });
+    }
+
+    return res.redirect(303, "/");
+  });
+});
+```
+
+Example product-detail response structure:
+
+```json
+{
+  "success": true,
+  "product": {
+    "id": 1,
+    "name": "Northstar Field Watch",
+    "price": 199,
+    "rating": 4,
+    "reviewSummary": {
+      "average": 4,
+      "total": 2,
+      "breakdown": {
+        "1": 0,
+        "2": 0,
+        "3": 1,
+        "4": 0,
+        "5": 1
+      }
+    },
+    "reviews": []
+  }
+}
+```
+
+## Frontend Features
+
+- Responsive storefront for desktop and mobile
+- Dynamic product loading from MySQL
+- Category filtering, search, and sorting
+- Product detail page with stock and rating information
+- Review list, rating summary, and review submission dialog
+- Shopping bag stored in `localStorage`
+- Quantity controls and subtotal calculation
 - Free-shipping progress indicator
-- Newsletter form
-
-### Authentication
-
-- Customer registration
-- Client-side and server-side form validation
-- Password hashing with `bcryptjs`
-- Customer sign-in
-- Session-based login state
+- Checkout form with contact, address, shipping, and payment sections
+- Registration and sign-in pages
 - Signed-in account popover
-- Sign-out support
-
-## Current Status
-
-The storefront currently uses demonstration product data defined in `public/javascripts/shop.js`. Product management and product loading from MySQL are planned but have not been implemented yet.
-
-Customer registration, sign-in, session checks, and sign-out are connected to MySQL and Express.
 
 ## Technology Stack
 
-- Native HTML5
+- HTML5
 - CSS3
 - Vanilla JavaScript
 - Node.js
 - Express 4
-- MySQL 2
+- MySQL / `mysql2`
 - `bcryptjs`
 - `express-session`
 - Lucide icons
@@ -51,245 +119,179 @@ Customer registration, sign-in, session checks, and sign-out are connected to My
 04-onlineTrade/
 |-- bin/
 |   `-- www
+|-- docs/
+|   `-- screenshots/
 |-- public/
+|   |-- images/products/
 |   |-- javascripts/
 |   |   |-- auth.js
+|   |   |-- checkout.js
+|   |   |-- product.js
 |   |   `-- shop.js
 |   |-- stylesheets/
 |   |   |-- auth.css
+|   |   |-- checkout.css
+|   |   |-- product.css
 |   |   `-- style.css
+|   |-- checkout.html
 |   |-- index.html
 |   |-- login.html
+|   |-- product.html
 |   `-- register.html
 |-- routes/
-|   |-- index.js
-|   `-- users.js
-|-- views/
+|   `-- index.js
 |-- app.js
 |-- db.js
 |-- package.json
 `-- README.md
 ```
 
-## Requirements
+## Database Model
 
-- Node.js
-- npm
-- MySQL
+The application uses these main tables:
+
+```text
+customers        Registered customer accounts
+products         Product information, prices, stock, and status
+product_reviews  Product ratings and written reviews
+addresses        Customer delivery addresses (planned order flow)
+orders           Order header and delivery snapshot (planned order flow)
+order_items      Products and price snapshots in an order (planned order flow)
+```
+
+Main relationships:
+
+```text
+customers  1 ---- N  product_reviews
+products   1 ---- N  product_reviews
+customers  1 ---- N  addresses
+customers  1 ---- N  orders
+orders     1 ---- N  order_items
+products   1 ---- N  order_items
+```
+
+## API Endpoints
+
+| Method | Endpoint | Description | Status |
+| --- | --- | --- | --- |
+| `POST` | `/api/register` | Validate and register a customer | Implemented |
+| `POST` | `/api/login` | Verify credentials and create a session | Implemented |
+| `GET` | `/api/check-login` | Return the current login state | Implemented |
+| `POST` | `/api/logout` | Destroy the current session | Implemented |
+| `GET` | `/api/getProducts` | Return active products | Implemented |
+| `GET` | `/api/getProduct?id=1` | Return one product with reviews | Implemented |
+| `POST` | `/api/addReview` | Add an authenticated product review | Implemented |
+| `POST` | `/api/createOrder` | Create an order and update stock | In progress |
 
 ## Installation
-
-Clone the repository:
 
 ```bash
 git clone https://github.com/Leon202503/onlineTradePage.git
 cd onlineTradePage
-```
-
-Install dependencies:
-
-```bash
 npm install
 ```
 
-## Database Setup
+Create a MySQL database named `onlinetrade`, create the required tables, and configure the local connection in `db.js`.
 
-Create the database:
-
-```sql
-CREATE DATABASE onlinetrade
-  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;
-
-USE onlinetrade;
-```
-
-Create the customer table:
-
-```sql
-CREATE TABLE customers (
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  first_name VARCHAR(50) NOT NULL,
-  last_name VARCHAR(50) NOT NULL,
-  email VARCHAR(255) NOT NULL,
-  password VARCHAR(255) NOT NULL,
-  terms TINYINT NOT NULL DEFAULT 0,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
-
-Configure the connection in `db.js` for your local MySQL instance:
-
-```javascript
-const connection = mysql.createConnection({
-  host: "localhost",
-  port: "YOUR_MYSQL_PORT",
-  user: "YOUR_MYSQL_USER",
-  password: "YOUR_MYSQL_PASSWORD",
-  database: "onlinetrade"
-});
-```
-
-Do not commit real database credentials. Use environment variables before deploying the application.
-
-## Running the Application
-
-Start the development server:
+Start the application:
 
 ```bash
 npm start
 ```
 
-Open:
-
-```text
-http://localhost:3000
-```
-
-Available pages:
-
-```text
-/           Storefront
-/login      Sign-in page
-/register   Registration page
-```
-
-## Authentication Flow
-
-1. A customer submits the registration form.
-2. Express validates the submitted fields.
-3. `bcryptjs` hashes the password.
-4. The customer record is stored in MySQL.
-5. The customer submits the sign-in form.
-6. Express retrieves the customer by email.
-7. `bcryptjs` compares the submitted password with the stored hash.
-8. Express creates a new session and stores basic customer information.
-9. The browser receives the signed session cookie.
-10. The storefront loads the signed-in account information from the session.
-
-## Current Endpoints
-
-```text
-GET  /api/check-login   Check the current session
-POST /api/register      Register a customer
-POST /api/login         Sign in
-POST /api/logout        Sign out
-```
+Open [http://localhost:3000](http://localhost:3000).
 
 ## Security Notes
 
-- Passwords are hashed before being stored.
-- Passwords and password hashes are not stored in the session.
-- The Session Cookie uses `httpOnly` and `sameSite=lax`.
-- The current default session store is intended for development only.
-- Use a persistent session store such as MySQL in production.
-- Set `SESSION_SECRET` to a long random value in production.
-- Enable secure cookies when the site is served over HTTPS.
+- Passwords are stored as bcrypt hashes, not plain text.
+- SQL values are passed through placeholders.
+- Password hashes are never stored in the session.
+- The session cookie uses `httpOnly` and `sameSite=lax`.
+- Database credentials and `SESSION_SECRET` should be supplied through environment variables before deployment.
+- The default in-memory session store is suitable only for development.
+- Production deployment should use HTTPS, secure cookies, and a persistent session store.
 
-## Planned Work
+## Next Steps
 
-- Load products from MySQL
-- Product detail pages
-- Database-backed shopping carts
-- Customer favorites
-- Customer account and order pages
-- Order creation and stock updates
-- Administration tools
-- Persistent MySQL session storage
+- Implement `/api/createOrder` with a MySQL transaction
+- Save address, order, and order-item records
+- Validate product prices and stock on the server
+- Update stock atomically when an order is created
+- Add customer order-history pages
+- Add duplicate-email handling during registration
+- Move database credentials into environment variables
 
 ---
 
 # 中文介绍
 
-Northstar Supply 是一个响应式在线购物项目，前端使用原生 HTML、CSS 和 JavaScript，后端使用 Express 与 MySQL。项目目前包含商品展示、注册、登录、密码加密、Session 登录状态和登录用户悬浮面板。
+Northstar Supply 是一个单店铺英文购物网站，前端使用原生 HTML、CSS 和 JavaScript，后端使用 Express 与 MySQL。项目已经实现用户认证、数据库商品读取、商品详情、评分评论和前端结账流程。
 
-仓库地址：[Leon202503/onlineTradePage](https://github.com/Leon202503/onlineTradePage)
+## 后端代码 - 我的主要工作
 
-## 已实现功能
+本项目的 Express/MySQL 后端由我编写。商品数据并不是写死在前端，而是通过 Express 接口从 MySQL 查询后交给页面显示。
 
-### 商品页面
+目前已经完成的后端功能包括：
 
-- 桌面端和移动端响应式布局
-- 商品分类筛选
-- 商品搜索和排序
-- 商品收藏交互
-- 购物车抽屉
-- 商品数量与小计计算
-- 免运费进度提示
-- 邮件订阅表单
+- 用户注册与服务端字段校验
+- 使用 `bcryptjs` 对密码进行加密
+- 使用 SQL 占位符传递查询参数
+- 用户登录与密码校验
+- 登录成功后重新生成 Session
+- 查询登录状态与退出登录
+- 从 `products` 表读取商品列表
+- 按商品 ID 查询商品详情
+- 从 `product_reviews` 表读取评论
+- 计算平均评分和 1 至 5 星评分数量
+- 校验登录状态后添加评论
+- 根据不同结果返回合适的 HTTP 状态码和 JSON
 
-### 用户功能
+## 前端功能
 
-- 用户注册
-- 前端和后端表单校验
-- 使用 `bcryptjs` 加密密码
-- 用户登录
-- 基于 Session 的登录状态
-- 登录用户悬浮面板
-- 退出登录
+- 响应式商品首页
+- 商品分类、搜索和排序
+- 数据库商品动态展示
+- 商品详情、库存和评分信息
+- 评论列表和发表评论弹窗
+- 使用 `localStorage` 保存购物车
+- 商品数量与价格计算
+- 登录、注册和用户信息悬浮窗
+- 收货信息、配送方式和支付方式结账页面
 
-## 当前状态
+## 当前接口
 
-商品页面目前使用 `public/javascripts/shop.js` 中的静态演示数据，尚未实现从 MySQL 查询商品。
+| 方法 | 路径 | 功能 | 状态 |
+| --- | --- | --- | --- |
+| `POST` | `/api/register` | 注册用户 | 已完成 |
+| `POST` | `/api/login` | 登录并创建 Session | 已完成 |
+| `GET` | `/api/check-login` | 查询登录状态 | 已完成 |
+| `POST` | `/api/logout` | 退出登录 | 已完成 |
+| `GET` | `/api/getProducts` | 查询商品列表 | 已完成 |
+| `GET` | `/api/getProduct?id=1` | 查询商品详情和评论 | 已完成 |
+| `POST` | `/api/addReview` | 添加商品评论 | 已完成 |
+| `POST` | `/api/createOrder` | 创建订单并扣减库存 | 开发中 |
 
-用户注册、登录、Session 状态查询和退出登录已经连接 Express 与 MySQL。
-
-## 安装与运行
-
-克隆项目：
-
-```bash
-git clone https://github.com/Leon202503/onlineTradePage.git
-cd onlineTradePage
-```
-
-安装依赖：
+## 运行项目
 
 ```bash
 npm install
-```
-
-根据本机 MySQL 配置修改 `db.js`，并按照英文部分的 SQL 创建 `onlinetrade` 数据库和 `customers` 表。
-
-启动项目：
-
-```bash
 npm start
 ```
 
-访问：
+然后访问：
 
 ```text
 http://localhost:3000
 ```
 
-## 当前接口
-
-```text
-GET  /api/check-login   查询登录状态
-POST /api/register      用户注册
-POST /api/login         用户登录
-POST /api/logout        退出登录
-```
-
-## 注意事项
-
-- 不要把真实数据库密码提交到 GitHub。
-- 正式部署时应通过环境变量读取数据库配置。
-- 当前 Session 默认保存在 Node.js 内存中，服务器重启后登录状态会丢失。
-- 正式环境应使用 MySQL 等持久化 Session Store。
-- 正式 HTTPS 环境应启用安全 Cookie。
-
 ## 后续计划
 
-- 从 MySQL 加载商品
-- 商品详情页面
-- 数据库购物车
-- 用户收藏
-- 用户中心与订单页面
-- 创建订单与库存管理
-- 后台商品管理
-- MySQL Session 持久化
+- 使用 MySQL 事务完成创建订单接口
+- 写入地址、订单和订单商品明细
+- 在服务端重新校验价格与库存
+- 下单时安全扣减库存
+- 完成用户订单历史页面
+- 使用环境变量保存数据库配置和 Session 密钥
 
 ## License
 
